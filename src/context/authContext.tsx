@@ -1,6 +1,6 @@
 import Spinner from '@components/spinner';
 import { ILogin } from '@interfaces/auth/login.interface';
-import { login, me } from '@services/auth.service';
+import { login } from '@services/auth.service';
 import React, {
     useEffect, createContext, FC, PropsWithChildren, useState, useMemo, useCallback, Suspense,
 } from 'react';
@@ -17,9 +17,12 @@ interface AuthContextType {
 }
 
 export interface User {
-    token: string;
-    role: string;
-    fullName: string;
+    auth: { token: string };
+    fullName: string,
+    email: string,
+    phone: string,
+    age: number,
+    role: 'Patient' | 'Doctor',
 }
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -29,52 +32,40 @@ export const useAuth = () => React.useContext(AuthContext);
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     const [user, setUser] = useState<User | undefined>(undefined);
     const navigate = useNavigate();
-    const [cookies, setCookie, removeCookie] = useCookies(['auth-token']);
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const { isLoading, error, mutateAsync } = useMutation((params: ILogin) => login(params));
-    const {
-        isLoading: isLoadingMe,
-        error: errorMe,
-        mutateAsync: mutateAsyncMe,
-    } = useMutation(me);
-
-    const fetchFromCookie = useCallback(async () => {
-        const userFromApi = await mutateAsyncMe();
-        setUser(userFromApi);
-    }, [mutateAsyncMe]);
 
     useEffect(() => {
-        // Token is preset but not user info
-        if (cookies['auth-token'] && user === undefined) fetchFromCookie();
-    }, [cookies, fetchFromCookie, navigate, user]);
+        setUser(cookies.user);
+    }, [cookies, navigate]);
 
     const loginHandler = useCallback(async (data: ILogin) => {
-        const { token } = await mutateAsync(data);
+        const userInfo = await mutateAsync(data);
 
-        setCookie('auth-token', token);
-
-        await fetchFromCookie();
+        setCookie('user', userInfo);
+        setUser(userInfo);
 
         navigate('/home', { replace: true });
-    }, [mutateAsync, navigate, setCookie, fetchFromCookie]);
+    }, [mutateAsync, navigate, setCookie]);
 
-    const logoutHandler = useCallback(() => removeCookie('auth-token'), [removeCookie]);
+    const logoutHandler = useCallback(() => removeCookie('user'), [removeCookie]);
 
     const memoizedForProvider = useMemo(
         () => ({
             user,
             login: loginHandler,
             logout: logoutHandler,
-            loading: isLoading || isLoadingMe,
-            error: error || errorMe,
+            loading: isLoading,
+            error,
         }),
-        [user, loginHandler, logoutHandler, isLoading, isLoadingMe, error, errorMe],
+        [user, loginHandler, logoutHandler, isLoading, error],
     );
 
     return (
         <AuthContext.Provider value={memoizedForProvider}>
             <Suspense fallback={<Spinner />}>
-                { !user ? null : children }
+                { children }
             </Suspense>
         </AuthContext.Provider>
     );

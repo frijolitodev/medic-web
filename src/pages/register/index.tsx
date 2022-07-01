@@ -1,13 +1,13 @@
-import React, { FC, useEffect } from 'react';
-import { ILogin } from '@interfaces/auth/login.interface';
-import Layout from '@components/layout';
 import TextInput from '@components/inputs';
-import { Toaster } from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import Layout from '@components/layout';
 import { useAuth } from '@context/authContext';
+import { ILogin } from '@interfaces/auth/login.interface';
+import React, { FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Toaster } from 'react-hot-toast';
+import { useNavigate, Link } from 'react-router-dom';
 
-const Login: FC = () => {
+const Register: FC = () => {
     const { user, login } = useAuth();
     const navigate = useNavigate();
 
@@ -79,6 +79,6 @@ const Login: FC = () => {
             </div>
         </Layout>
     );
-};
+}
 
-export default Login;
+export default Register;
