@@ -5,8 +5,6 @@ import { Navigate } from 'react-router-dom';
 const RequireAuth: FC<PropsWithChildren> = ({ children }) => {
     const auth = useAuth();
 
-    if (!auth.user) return null;
-
     return auth.user
         ? children as ReactElement
         : <Navigate to="/login" replace /> as ReactElement;
