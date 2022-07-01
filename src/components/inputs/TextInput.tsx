@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { ExclamationCircleIcon as Icon } from '@heroicons/react/solid';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
