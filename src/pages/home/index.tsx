@@ -5,9 +5,11 @@ import { UserAppointments } from '@components/appointments';
 import { UserInfo } from '@components/user';
 
 const Home: FC = () => (
-    <Layout>
-        <UserInfo />
-        <UserAppointments />
+    <Layout hasMenu>
+        <section className="space-y-10">
+            <UserInfo />
+            <UserAppointments />
+        </section>
     </Layout>
 );
 

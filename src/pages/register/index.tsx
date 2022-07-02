@@ -1,11 +1,12 @@
-import TextInput from '@components/inputs';
-import Layout from '@components/layout';
-import { useAuth } from '@context/authContext';
-import { IRegister } from '@interfaces/auth/register.interface';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { FC, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+
+import { IRegister } from '@interfaces/auth/register.interface';
+import Layout from '@components/layout';
+import TextInput from '@components/inputs';
 import { Toaster } from 'react-hot-toast';
-import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@context/authContext';
+import { useForm } from 'react-hook-form';
 
 const Register: FC = () => {
     const { user, login } = useAuth();
@@ -21,8 +22,9 @@ const Register: FC = () => {
             password: '',
             name: '',
             lastName: '',
-            age: 0,
+            age: undefined,
             phone: '',
+            role: "patient",
         },
     });
 
@@ -85,7 +87,7 @@ const Register: FC = () => {
 
     return (
         <Layout>
-            <div className="max-w-screen-sm h-screen flex items-center justify-center mx-auto">
+            <div className="max-w-screen-md h-screen flex items-center justify-center mx-auto">
                 <Toaster position="bottom-center" />
                 <form onSubmit={handleSubmit(submitHandler)} className="w-full form-control px-12 lg:px-32">
                     <div className="flex space-x-4">
@@ -131,6 +133,12 @@ const Register: FC = () => {
                         errors={errors?.password?.message}
                         isPassword
                     />
+                    <div class="form-control">
+                        <label class="cursor-pointer label">
+                            <span class="label-text">Remember me</span>
+                            <input type="checkbox" class="checkbox checkbox-sm checkbox-accent" />
+                        </label>
+                    </div>
                     <Link className="ml-auto text-slate-400 font-semibold underline italic -mt-2 hover:text-accent" to="/register">
                         Ya tienes cuenta? Inicia sesíon.
                     </Link>
