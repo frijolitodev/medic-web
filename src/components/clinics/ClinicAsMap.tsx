@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Marker, Map } from '@components/map';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { ClinicAsMapProps } from '@interfaces/props/displayers.props';

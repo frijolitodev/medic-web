@@ -1,4 +1,4 @@
-import { Doctor } from '@interfaces/doctor/doctor.interface';
+import { DoctorCardProps } from '@interfaces/props/displayers.props';
 import React, { FC, useMemo } from 'react';
 import CardBase from './CardBase';
 
