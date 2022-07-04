@@ -6,6 +6,7 @@ import Landing from '@pages/landing';
 import { AuthProvider } from '@context/authContext';
 import RequireAuth from '@components/auth/RequireAuth';
 import Register from '@pages/register';
+import CreateAppointment from '@pages/appointments/create';
 
 const App = () => (
     <AuthProvider>
@@ -18,6 +19,14 @@ const App = () => (
                 element={(
                     <RequireAuth>
                         <Home />
+                    </RequireAuth>
+                )}
+            />
+            <Route
+                path="/appointments"
+                element={(
+                    <RequireAuth>
+                        <CreateAppointment />
                     </RequireAuth>
                 )}
             />
