@@ -4,6 +4,7 @@ import Navbar from '@components/navbar/Navbar';
 import Spinner from '@components/spinner';
 import { useAuth } from '@context/authContext';
 import classNames from 'classnames';
+import { Toaster } from 'react-hot-toast';
 
 interface LayoutProps extends PropsWithChildren {
     isLoading?: boolean;
@@ -16,6 +17,7 @@ const Layout: FC<LayoutProps> = ({ children, isLoading, hasMenu }) => {
 
     return (
         <>
+            <Toaster position="bottom-center" />
             {(loading || isLoading) && <Spinner />}
             {hasMenu && <Navbar />}
             <main className={classNames('max-w-screen-xl mx-auto', { 'px-10': hasMenu })}>

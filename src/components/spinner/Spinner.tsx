@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 const Spinner: FC = () => (
     <div className="fixed z-50 w-screen h-screen bg-black bg-opacity-40 centered-xy">

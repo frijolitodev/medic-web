@@ -8,7 +8,7 @@ const Navbar: FunctionComponent = () => {
     const [showNav, setShowNav] = useState(false);
 
     const items = [
-        { text: 'Link 1', redirectTo: '/' },
+        { text: 'Citas', redirectTo: '/appointments' },
         { text: 'Link 2', redirectTo: '/' },
         { text: 'Link 3', redirectTo: '/' },
     ];
