@@ -4,7 +4,7 @@ import Login from '@pages/login';
 import Home from '@pages/home';
 import Landing from '@pages/landing';
 import { AuthProvider } from '@context/authContext';
-import RequireAuth from '@components/auth/RequireAuth';
+import RequireAuth from '@components/auth';
 import Register from '@pages/register';
 import CreateAppointment from '@pages/appointments/create';
 
