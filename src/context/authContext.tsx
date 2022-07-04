@@ -1,37 +1,28 @@
-import Spinner from '@components/spinner';
+import { User } from '@interfaces/auth/identity.interface';
 import { ILogin } from '@interfaces/auth/login.interface';
 import { login } from '@services/auth.service';
 import React, {
-    useEffect, createContext, FC, PropsWithChildren, useState, useMemo, useCallback, Suspense,
+    useEffect, createContext, FC, PropsWithChildren, useState, useMemo, useCallback,
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
-    user?: any;
+    user?: User;
     loading: boolean;
     error?: any;
     login: (data: ILogin) => void;
     logout: () => void;
 }
 
-export interface User {
-    auth: { token: string };
-    fullName: string,
-    email: string,
-    phone: string,
-    age: number,
-    role: 'Patient' | 'Doctor',
-}
-
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const useAuth = () => React.useContext(AuthContext);
+export const useAuth = () => React.useContext<AuthContextType>(AuthContext);
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [user, setUser] = useState<User | undefined>(undefined);
     const navigate = useNavigate();
+    const [user, setUser] = useState<User | undefined>(undefined);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const { isLoading, error, mutateAsync } = useMutation((params: ILogin) => login(params));
@@ -64,9 +55,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return (
         <AuthContext.Provider value={memoizedForProvider}>
-            <Suspense fallback={<Spinner />}>
-                { children }
-            </Suspense>
+            {children}
         </AuthContext.Provider>
     );
 };
