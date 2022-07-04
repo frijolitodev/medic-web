@@ -1,19 +1,25 @@
 import React, { FC, useEffect } from 'react';
 import { ILogin } from '@interfaces/auth/login.interface';
 import Layout from '@components/layout';
-import TextInput from '@components/inputs';
-import { Toaster } from 'react-hot-toast';
+import { TextInput } from '@components/inputs';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@context/authContext';
+import Header from '@components/header';
 
 const Login: FC = () => {
+    const { state: prevFromRouter } = useLocation();
     const { user, login } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) navigate('/home', { replace: true });
-    }, [user, navigate]);
+        if (user) {
+            if (prevFromRouter) {
+                const prevRoute = (prevFromRouter as any).location.pathname;
+                navigate(prevRoute, { replace: true });
+            } else navigate('/home', { replace: true });
+        }
+    }, [user, navigate, prevFromRouter]);
 
     const { register, formState: { errors }, handleSubmit } = useForm<ILogin>({
         defaultValues: {
@@ -53,9 +59,9 @@ const Login: FC = () => {
 
     return (
         <Layout>
-            <div className="max-w-screen-sm h-screen flex items-center justify-center mx-auto">
-                <Toaster position="bottom-center" />
-                <form onSubmit={handleSubmit(submitHandler)} className="w-full form-control px-12 lg:px-32">
+            <div className="max-w-screen-sm h-screen flex flex-col items-center justify-center mx-auto px-12 lg:px-32">
+                <Header title="Bienvenido" subtitle="Que bueno verte de nuevo 🥳" />
+                <form onSubmit={handleSubmit(submitHandler)} className="w-full form-control">
                     <TextInput
                         label="Correo electrónico"
                         placeholder="example@email.com"
