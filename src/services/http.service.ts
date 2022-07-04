@@ -19,8 +19,13 @@ export const request = async (
 ) => {
     const completeUrl = createUrl(url);
     const { needsAuth, isMultipart } = extraOptions || {};
+    const cookies = getCookie('user');
 
-    const auth = `Bearer ${getCookie('auth-token')?.toString()}`;
+    let userFromCookies;
+
+    if (cookies !== '') userFromCookies = JSON.parse(cookies);
+
+    const auth = userFromCookies ? `Bearer ${userFromCookies.auth.token}` : '';
     const preHeader = needsAuth && auth && { Authorization: auth };
     const headers: any = isMultipart ? { 'content-type': 'multipart/form', ...preHeader } : preHeader;
 
