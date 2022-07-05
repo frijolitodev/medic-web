@@ -23,14 +23,14 @@ const ClinicAsMap: FC<ClinicAsMapProps> = ({
     };
 
     return (
-        <div className={classNames('card card-compact w-full bg-slate-600', { 'bg-primary': memoizedSelect, 'text-primary-content': memoizedSelect })}>
+        <div className={classNames('mx-10 my-4 card card-compact w-full bg-slate-600 lg:w-1/3', { 'bg-primary': memoizedSelect, 'text-primary-content': memoizedSelect })}>
             <figure>
                 <Wrapper apiKey={import.meta.env.VITE_MAPS_API_KEY}>
                     <Map
                         center={center}
                         zoom={zoom}
                         onIdle={onIdle}
-                        className="h-96 w-full lg:w-1/3 lg:m-4"
+                        className="h-96 w-full"
                     >
                         <Marker position={center} />
                     </Map>

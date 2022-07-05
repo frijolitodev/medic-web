@@ -28,7 +28,7 @@ const ClinicsDisplayer: FC<ClinicsDisplayerProps<Clinic | undefined>> = ({
     }, [selected, action]);
 
     return (
-        <div className="centered-xy flex-col w-full space-y-10 lg:space-y-0">
+        <div className="centered-xy flex-col w-full space-y-10 lg:space-y-0 lg:flex-row lg:flex-wrap">
             {
                 displayClinics.map((clinic, index) => (
                     <ClinicAsMap
