@@ -1,4 +1,3 @@
-import { ClinicAsMap } from '@components/clinics';
 import { DatePickerDisplayer, HourPickerDisplayer } from '@components/displayers';
 import ClinicsDisplayer from '@components/displayers/ClinicsDisplayer';
 import DoctorsDisplayer from '@components/displayers/DoctorsDisplayer';

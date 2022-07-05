@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, {
     FC, useEffect, useRef, useState,
 } from 'react';
-import { IRegister } from '@interfaces/auth/register.interface';
+import { Register as IRegister } from '@interfaces/auth/register.interface';
 import Layout from '@components/layout';
 import { TextInput, DateInput } from '@components/inputs';
 import { useAuth } from '@context/authContext';
@@ -12,11 +12,11 @@ import { useMutation } from 'react-query';
 import { register as apiRegister } from '@services/auth.service';
 import Header from '@components/header';
 import toast from 'react-hot-toast';
+import registerRules from 'src/rules/register.rules';
 
 const Register: FC = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
-    const roleRef = useRef<HTMLInputElement>(null);
     const { isLoading, mutateAsync } = useMutation((data: any) => apiRegister(data));
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
     const [preview, setPreview] = useState<string | undefined>();
@@ -50,57 +50,6 @@ const Register: FC = () => {
         },
     });
 
-    const inputRules = {
-        email: {
-            required: {
-                value: true,
-                message: 'Email cannot be empty',
-            },
-            minLength: {
-                value: 8,
-                message: 'Email is at least 8 characters long',
-            },
-        },
-        password: {
-            required: {
-                value: true,
-                message: 'Password cannot be empty',
-            },
-            minLength: {
-                value: 8,
-                message: 'Password is at least 8 characters long',
-            },
-        },
-        name: {
-            required: {
-                value: true,
-                message: 'Name cannot be empty',
-            },
-        },
-        lastName: {
-            required: {
-                value: true,
-                message: 'Lastname cannot be empty',
-            },
-        },
-        phone: {
-            required: {
-                value: true,
-                message: 'Phone cannot be empty',
-            },
-            minLength: {
-                value: 8,
-                message: 'Phone is at least 8 characters long',
-            },
-        },
-        dateOfBirth: {
-            required: {
-                value: true,
-                message: 'Age cannot be empty',
-            },
-        },
-    };
-
     const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || e.target.files.length === 0) {
             setSelectedFile(undefined);
@@ -112,12 +61,7 @@ const Register: FC = () => {
 
     const submitHandler = async (data: IRegister) => {
         const formData = new FormData();
-        const role = roleRef?.current?.checked ? 'doctor' : 'patient';
-
-        if (role === 'doctor' && data.img.length <= 0) {
-            toast.error('Los doctores deben registrarse con una imagen de perfil 😥');
-            return;
-        }
+        const role = 'patient';
 
         formData.append('role', role);
 
@@ -126,8 +70,6 @@ const Register: FC = () => {
         Object.entries(data).forEach(([key, value]) => {
             formData.append(key, value);
         });
-
-        console.log(data.dateOfBirth);
 
         await mutateAsync(formData);
         toast.success('Ahora inicia sesión');
@@ -164,13 +106,13 @@ const Register: FC = () => {
                         <TextInput
                             label="Nombre"
                             placeholder="John"
-                            inputProps={register('name', inputRules.name)}
+                            inputProps={register('name', registerRules.name)}
                             errors={errors?.name?.message}
                         />
                         <TextInput
                             label="Apellido"
                             placeholder="Doe"
-                            inputProps={register('lastName', inputRules.lastName)}
+                            inputProps={register('lastName', registerRules.lastName)}
                             errors={errors?.lastName?.message}
                         />
                     </div>
@@ -179,7 +121,7 @@ const Register: FC = () => {
                             <TextInput
                                 label="Telefono"
                                 placeholder="xxxx-xxxx"
-                                inputProps={register('phone', inputRules.phone)}
+                                inputProps={register('phone', registerRules.phone)}
                                 errors={errors?.phone?.message}
                             />
                         </span>
@@ -194,22 +136,16 @@ const Register: FC = () => {
                     <TextInput
                         label="Correo electrónico"
                         placeholder="example@email.com"
-                        inputProps={register('email', inputRules.email)}
+                        inputProps={register('email', registerRules.email)}
                         errors={errors?.email?.message}
                     />
                     <TextInput
                         label="Contraseña"
                         placeholder="********************"
-                        inputProps={register('password', inputRules.password)}
+                        inputProps={register('password', registerRules.password)}
                         errors={errors?.password?.message}
                         isPassword
                     />
-                    <div className="form-control pb-6">
-                        <label className="cursor-pointer label">
-                            <span className="label-text text-base font-medium">Soy doctor</span>
-                            <input ref={roleRef} type="checkbox" className="checkbox checkbox-sm checkbox-accent" />
-                        </label>
-                    </div>
                     <Link className="ml-auto text-slate-400 font-semibold underline italic -mt-2 hover:text-accent" to="/login">
                         ¿Ya tienes cuenta? Inicia sesíon.
                     </Link>

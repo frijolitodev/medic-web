@@ -5,8 +5,9 @@ import React, {
     useEffect, createContext, FC, PropsWithChildren, useState, useMemo, useCallback,
 } from 'react';
 import { useCookies } from 'react-cookie';
+import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from 'react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
     user?: User;
@@ -32,12 +33,16 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     }, [cookies, navigate]);
 
     const loginHandler = useCallback(async (data: ILogin) => {
-        const userInfo = await mutateAsync(data);
+        try {
+            const userInfo = await mutateAsync(data);
 
-        setCookie('user', userInfo);
-        setUser(userInfo);
+            setCookie('user', userInfo);
+            setUser(userInfo);
 
-        navigate('/home', { replace: true });
+            navigate('/home', { replace: true });
+        } catch (e: any) {
+            if (e.status === 404) toast.error('No es posible iniciar sesion');
+        }
     }, [mutateAsync, navigate, setCookie]);
 
     const logoutHandler = useCallback(() => removeCookie('user'), [removeCookie]);
@@ -55,6 +60,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return (
         <AuthContext.Provider value={memoizedForProvider}>
+            <Toaster position="bottom-center" />
             {children}
         </AuthContext.Provider>
     );

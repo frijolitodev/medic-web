@@ -1,6 +1,6 @@
 import { ILogin } from './login.interface';
 
-export interface IRegister extends ILogin {
+export interface Register extends ILogin {
     img?: any;
     name: string;
     lastName: string;

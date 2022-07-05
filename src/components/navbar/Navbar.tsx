@@ -9,8 +9,6 @@ const Navbar: FunctionComponent = () => {
 
     const items = [
         { text: 'Citas', redirectTo: '/appointments' },
-        { text: 'Link 2', redirectTo: '/' },
-        { text: 'Link 3', redirectTo: '/' },
     ];
 
     return (

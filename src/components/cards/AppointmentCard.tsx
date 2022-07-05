@@ -10,11 +10,13 @@ interface AppointmentCardProps {
 
 const AppointmentCard: FC<AppointmentCardProps> = (
     {
-        appointment: {
-            id, doctor, clinic, date, isAccepted,
-        },
+        appointment,
     },
 ) => {
+    const {
+        id, doctor, clinic, date, isAccepted,
+    } = appointment;
+
     const longDate = new Date(date).toLocaleDateString('es-sv', longDateTimeFormat);
     const justTime = new Date(date).toLocaleTimeString('es-sv', justTimeFormat);
 
@@ -46,7 +48,7 @@ const AppointmentCard: FC<AppointmentCardProps> = (
                     <span className="font-bold">{clinic.name}</span>
                 </p>
                 <div className="card-actions justify-end">
-                    <Link to="/" className="btn btn-primary">Ver más</Link>
+                    <Link to={`/appointments/${id}`} state={{ appointment }} className="btn btn-primary">Ver más</Link>
                 </div>
             </div>
         </CardBase>

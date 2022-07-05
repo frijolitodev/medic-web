@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@context/authContext';
 import Header from '@components/header';
+import loginRules from 'src/rules/login.rules';
 
 const Login: FC = () => {
     const { state: prevFromRouter } = useLocation();
@@ -28,29 +29,6 @@ const Login: FC = () => {
         },
     });
 
-    const inputRules = {
-        email: {
-            required: {
-                value: true,
-                message: 'Email cannot be empty',
-            },
-            minLength: {
-                value: 8,
-                message: 'Email is at least 8 characters long',
-            },
-        },
-        password: {
-            required: {
-                value: true,
-                message: 'Password cannot be empty',
-            },
-            minLength: {
-                value: 8,
-                message: 'Password is at least 8 characters long',
-            },
-        },
-    };
-
     const submitHandler = async (data: ILogin) => {
         login(data);
     };
@@ -65,13 +43,13 @@ const Login: FC = () => {
                     <TextInput
                         label="Correo electrónico"
                         placeholder="example@email.com"
-                        inputProps={register('email', inputRules.email)}
+                        inputProps={register('email', loginRules.email)}
                         errors={errors?.email?.message}
                     />
                     <TextInput
                         label="Contraseña"
                         placeholder="********************"
-                        inputProps={register('password', inputRules.password)}
+                        inputProps={register('password', loginRules.password)}
                         errors={errors?.password?.message}
                         isPassword
                     />

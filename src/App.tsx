@@ -7,6 +7,7 @@ import { AuthProvider } from '@context/authContext';
 import RequireAuth from '@components/auth';
 import Register from '@pages/register';
 import CreateAppointment from '@pages/appointments/create';
+import AppointmentDetails from '@pages/appointments/details';
 
 const App = () => (
     <AuthProvider>
@@ -27,6 +28,14 @@ const App = () => (
                 element={(
                     <RequireAuth>
                         <CreateAppointment />
+                    </RequireAuth>
+                )}
+            />
+            <Route
+                path="/appointments/:aptId"
+                element={(
+                    <RequireAuth>
+                        <AppointmentDetails />
                     </RequireAuth>
                 )}
             />
